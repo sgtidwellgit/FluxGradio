@@ -1,0 +1,9 @@
+torch
+diffusers
+transformers
+accelerate
+sentencepiece
+protobuf
+gradio
+pillow
+python-dotenv
