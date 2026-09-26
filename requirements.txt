@@ -1,3 +1,6 @@
+# PyTorch must be installed separately with CUDA support.
+# See README.MD setup instructions
+
 torch
 diffusers
 transformers

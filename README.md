@@ -47,6 +47,17 @@ settings.
 - **An NVIDIA GPU with CUDA** is strongly recommended. Flux is a large model; running on CPU is
   possible but extremely slow. The default configuration uses fp16 precision plus sequential CPU
   offload, which is tuned to fit the full pipeline on a single 24GB-class GPU.
+  ** CUDA-enabled PyTorch ** PyTorch should be installed separately before installing the application's
+  remaining Python dependencies.
+  DO NOT rely on a generic `torch` dependency from PyPi when using an NVIDIA GPU.  Doing so may
+  install a CPU-only build of PyTorch, preventing FluxFrontEnd from detecting or using your GPU.
+  The current known-good development configuration is:
+  ```bash
+  Python: 3.12
+  PyTorch: 2.14.0+cu126
+  CUDA runtime: 12.6
+  ```
+
 - **Local Flux model weights**, already downloaded in `diffusers` format:
   - [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) — required.
   - [FLUX.1-Redux-dev](https://huggingface.co/black-forest-labs/FLUX.1-Redux-dev) — optional, only
@@ -68,14 +79,24 @@ settings.
 2. Create and activate a virtual environment (recommended):
 
    ```bash
-   python -m venv venv
-   venv\Scripts\activate      # Windows
+   python -m venv fluxgradio
+   fluxgradio\Scripts\activate      # Windows
    source venv/bin/activate   # macOS/Linux
    ```
+   
 
 3. Install dependencies:
 
    ```bash
+   python -m pip install --upgrade pip
+   
+   INSTALL CUDA-Enabled PyTorch:
+   pip install torch==2.14.0 --index-url https://download.pytorch.org/whl/cu126
+
+   Verify that PyTorch can see your NVIDIA GPU:
+   python -c "import torch; print('Torch:', torch.__version__); print('CUDA:', torch.version.cuda); print('Available:', torch.cuda.is_available()); print('GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'NONE')"
+
+
    pip install -r requirements.txt
    ```
 

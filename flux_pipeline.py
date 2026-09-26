@@ -47,7 +47,8 @@ class PipelineCache:
         logger.info("Pipeline weights loaded, applying memory optimizations")
         pipe.safety_checker = None
         pipe.enable_attention_slicing()
-        pipe.enable_vae_tiling()
+        #pipe.enable_vae_tiling()
+        pipe.vae.enable_tiling()
         # The flux-dev transformer alone is ~23.8GB in fp16, leaving almost no
         # headroom on a 24GB card. enable_model_cpu_offload() swaps whole
         # components at once, and for img2img the VAE runs both before and
